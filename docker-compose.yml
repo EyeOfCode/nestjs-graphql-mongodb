@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  main:
+    image: node:12
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongo
+    command: yarn start:dev:main
+  service:
+    image: node:12
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+    command: yarn start:dev:service
+  mongo:
+    image: mongo
+    volumes:
+      - mongo_data:/data/configdb
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017
+volumes:
+  mongo_data:
+    name: global_mongo
