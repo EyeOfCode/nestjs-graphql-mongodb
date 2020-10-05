@@ -5,6 +5,7 @@ import {
   ID,
   GraphQLISODateTime,
 } from '@nestjs/graphql';
+import { CompanyInfo } from './company.dto';
 
 @ObjectType()
 export class UserInfo {
@@ -14,8 +15,12 @@ export class UserInfo {
   name: string;
   @Field(() => Int)
   age: number;
+  @Field(() => CompanyInfo, { nullable: true })
+  company?: CompanyInfo;
+  @Field({ defaultValue: false })
+  deleted?: boolean;
   @Field(() => GraphQLISODateTime)
   createdAt?: Date;
   @Field(() => GraphQLISODateTime)
-  updateAt?: Date;
+  updatedAt?: Date;
 }
