@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 
 import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
+import { CompanyModule } from './company/company.module';
 
 @Module({
   imports: [
@@ -15,9 +15,18 @@ import { AuthModule } from './auth/auth.module';
       debug: true,
       playground: true,
     }),
-    MongooseModule.forRoot('mongodb://mongo:27017/nestjs'),
+    MongooseModule.forRoot('mongodb://mongo:27017/nestjs', {
+      connectionFactory: connection => {
+        /* eslint-disable @typescript-eslint/no-var-requires */
+        connection.plugin(require('mongoose-autopopulate'));
+        connection.plugin(require('mongoose-delete'), {
+          overrideMethods: ['findById', 'findOne'],
+        });
+        return connection;
+      },
+    }),
     UserModule,
-    AuthModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

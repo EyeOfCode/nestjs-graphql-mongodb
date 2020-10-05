@@ -37,6 +37,7 @@
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.7",
     "mongoose-autopopulate": "^0.12.2",
+    "mongoose-delete": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

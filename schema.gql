@@ -6,8 +6,9 @@ type UserInfo {
   _id: ID!
   name: String!
   age: Int!
+  deleted: Boolean!
   createdAt: DateTime!
-  updateAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """
@@ -15,16 +16,46 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type CompanyInfo {
+  _id: ID!
+  name: String!
+  deleted: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Query {
   users: [UserInfo!]!
   user(id: String!): UserInfo!
+  companys: [CompanyInfo!]!
+  company(id: String!): CompanyInfo!
 }
 
 type Mutation {
   createUser(input: UserInput!): UserInfo!
+  updateUser(input: UserUpdate!, id: String!): UserInfo!
+  softDeleteUser(id: String!): String!
+  deleteUser(id: String!): String!
+  createCompany(input: CompanyInput!): CompanyInfo!
+  updateCompany(input: CompanyUpdate!, id: String!): CompanyInfo!
+  softDeleteCompany(id: String!): String!
+  deleteCompany(id: String!): String!
 }
 
 input UserInput {
   name: String!
   age: Int!
+  company: String!
+}
+
+input UserUpdate {
+  age: Int!
+}
+
+input CompanyInput {
+  name: String!
+}
+
+input CompanyUpdate {
+  name: String!
 }
