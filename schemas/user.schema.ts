@@ -13,11 +13,10 @@ export class User {
   age: number;
 
   @Prop({
-    required: false,
     type: mSchema.Types.ObjectId,
-    ref: 'CompanySchema',
+    ref: 'Company',
   })
-  company: Company;
+  company?: Company;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
