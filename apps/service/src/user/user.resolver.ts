@@ -18,8 +18,11 @@ export class UserResolver {
   }
 
   @Mutation(() => UserInfo)
-  async createUser(@Args('input') input: UserInput): Promise<UserInfo> {
-    return this.userService.create(input);
+  async createUser(
+    @Args('companyId', { type: () => String }) companyId: string,
+    @Args('input') input: UserInput,
+  ): Promise<UserInfo> {
+    return this.userService.create(companyId, input);
   }
 
   @Mutation(() => UserInfo)

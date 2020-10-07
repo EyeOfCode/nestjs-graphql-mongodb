@@ -1,5 +1,4 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
-import { Company } from 'schemas/company.schema';
 
 @InputType()
 export class UserInput {
@@ -7,8 +6,6 @@ export class UserInput {
   name: string;
   @Field(() => Int)
   age: number;
-  @Field(() => Company)
-  company: Company;
 }
 
 @InputType()
