@@ -7,6 +7,7 @@ import { join } from 'path';
 
 import { UserModule } from './user/user.module';
 import { CompanyModule } from './company/company.module';
+import { MicroModule } from './micro/micro.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CompanyModule } from './company/company.module';
     }),
     UserModule,
     CompanyModule,
+    MicroModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserInfo } from 'dto/user.dto';
 import { UserInput, UserUpdate } from 'input/user.input';
 import { User, UserDocument } from 'schemas/user.schema';
+import { CompanyInfo } from 'dto/company.dto';
 import { CompanyService } from '../company/company.service';
 
 @Injectable()
@@ -28,6 +29,11 @@ export class UserService {
 
   async findOne(input: { by: string; find: string }): Promise<UserInfo> {
     return this.usersModel.findOne({ [input.by]: input.find }).exec();
+  }
+
+  async getCompanyData(id: string): Promise<CompanyInfo | null> {
+    const company = await this.companyService.findById(id);
+    return company || null;
   }
 
   async create(companyId: string, input: UserInput): Promise<UserInfo> {

@@ -1,9 +1,17 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { UserInfo } from 'dto/user.dto';
+import { CompanyInfo } from 'dto/company.dto';
 import { UserInput, UserUpdate } from 'input/user.input';
 
-@Resolver()
+@Resolver(() => UserInfo)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
@@ -15,6 +23,12 @@ export class UserResolver {
   @Query(() => UserInfo)
   async user(@Args('id') id: string): Promise<UserInfo> {
     return this.userService.findById(id);
+  }
+
+  @ResolveField('company', _type => CompanyInfo, { nullable: true })
+  async company(@Parent() user: UserInfo): Promise<CompanyInfo | null> {
+    const id = user.company?._id;
+    return this.userService.getCompanyData(id);
   }
 
   @Mutation(() => UserInfo)

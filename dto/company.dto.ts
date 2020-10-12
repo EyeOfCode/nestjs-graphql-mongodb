@@ -5,7 +5,7 @@ export class CompanyInfo {
   @Field(() => ID)
   _id?: string;
   @Field()
-  name: string;
+  name?: string;
   @Field({ defaultValue: false })
   deleted?: boolean;
   @Field(() => GraphQLISODateTime)
