@@ -2,7 +2,7 @@
 
 - [x] Microservice
 - [x] CRUD
-- [ ] Auth
+- [x] Auth
 - [ ] Middleware
 - [ ] Seeder and migration
 - [x] API gateway
