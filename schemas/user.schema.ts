@@ -6,11 +6,17 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
+  @Prop({required: true, unique: true})
+  email: string
+
   @Prop({ required: true })
   name: string;
 
+  @Prop({ required: true })
+  password: string
+
   @Prop()
-  age: number;
+  age?: number;
 
   @Prop({
     type: mSchema.Types.ObjectId,
@@ -19,4 +25,4 @@ export class User {
   company?: Company;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User)

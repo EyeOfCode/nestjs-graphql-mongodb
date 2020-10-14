@@ -17,12 +17,17 @@ scalar DateTime
 
 type UserInfo {
   _id: ID!
+  email: String!
   name: String!
   age: Int!
   company: CompanyInfo
   deleted: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type AuthToken {
+  token: String!
 }
 
 type Query {
@@ -41,10 +46,13 @@ type Mutation {
   updateCompany(input: CompanyUpdate!, id: String!): CompanyInfo!
   softDeleteCompany(id: String!): String!
   deleteCompany(id: String!): String!
+  login(input: AuthInput!): AuthToken!
 }
 
 input UserInput {
+  email: String!
   name: String!
+  password: String!
   age: Int!
 }
 
@@ -58,4 +66,9 @@ input CompanyInput {
 
 input CompanyUpdate {
   name: String!
+}
+
+input AuthInput {
+  email: String!
+  password: String!
 }
