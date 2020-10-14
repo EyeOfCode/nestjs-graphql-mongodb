@@ -12,9 +12,11 @@ export class UserInfo {
   @Field(() => ID)
   _id?: string;
   @Field()
+  email: string
+  @Field()
   name: string;
   @Field(() => Int)
-  age: number;
+  age?: number;
   @Field(() => CompanyInfo, { nullable: true })
   company?: CompanyInfo;
   @Field({ defaultValue: false })
@@ -23,4 +25,14 @@ export class UserInfo {
   createdAt?: Date;
   @Field(() => GraphQLISODateTime)
   updatedAt?: Date;
+}
+
+@ObjectType()
+export class UserData {
+  @Field()
+  _id?: string
+  @Field()
+  email: string
+  @Field()
+  password: string
 }

@@ -1,6 +1,6 @@
 ### Exp tempalte nestjs-graphql-mongodb
 
-- [ ] Microservice
+- [x] Microservice
 - [x] CRUD
 - [ ] Auth
 - [ ] Middleware

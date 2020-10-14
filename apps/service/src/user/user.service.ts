@@ -1,19 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserInfo } from 'dto/user.dto';
+import { UserData, UserInfo } from 'dto/user.dto';
 import { UserInput, UserUpdate } from 'input/user.input';
 import { User, UserDocument } from 'schemas/user.schema';
 import { CompanyInfo } from 'dto/company.dto';
 import { CompanyService } from '../company/company.service';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name)
     private readonly usersModel: Model<UserDocument>,
+
+    @Inject(forwardRef(() => CompanyService))
     private readonly companyService: CompanyService,
   ) {}
+
+  async findEmail(email: string): Promise<UserData>{
+    const emailExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const isValidEmail = emailExpression.test(
+      String(email).toLowerCase(),
+    );
+    if (!isValidEmail) {
+      throw new Error('email not in proper format');
+    }
+    return this.usersModel.findOne({ email }).exec();
+  }
 
   async find(): Promise<UserInfo[]> {
     return this.usersModel.find({ deleted: false }).exec();
@@ -37,7 +51,14 @@ export class UserService {
   }
 
   async create(companyId: string, input: UserInput): Promise<UserInfo> {
+    const checkEmail = await this.findEmail(input.email)
+    const user = await this.usersModel.findOne({email: checkEmail.email})
+    if(user){
+      throw new Error('duplicate user');
+    }
+
     const createdUser = await this.usersModel.create(input);
+    createdUser.password = await bcrypt.hashSync(createdUser.password,10);
     const company = await this.companyService.findById(companyId);
     createdUser.company = company;
     const created = await createdUser.save();
