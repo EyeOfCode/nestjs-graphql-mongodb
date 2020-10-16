@@ -3,13 +3,15 @@ import { AuthToken } from 'dto/auth.dto';
 import { AuthInput } from 'input/auth.input';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
     constructor(
         @Inject(forwardRef(() => UserService))
         private readonly userService: UserService,
+
+        private readonly jwtService: JwtService
       ) {}
 
       async login(input: AuthInput): Promise<AuthToken> {
@@ -23,13 +25,12 @@ export class AuthService {
             throw new Error('password not math')
         }
 
-        const exp = 10080
-        const accessToken = await jwt.sign(
+        const accessToken = await this.jwtService.sign(
             {
-              id: user._id,
-            },
-            'service',
-            { expiresIn: exp },
+              iss: "S1cbz61TePB8qidcQ5lft35bWapnMkc5", //key gateway
+              sub: user._id,
+              name: user.name
+            }
           );
         return {token: accessToken}
       }

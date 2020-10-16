@@ -19,7 +19,6 @@ import { AuthModule } from './auth/auth.module';
     }),
     MongooseModule.forRoot('mongodb://mongo:27017/nestjs', {
       connectionFactory: connection => {
-        /* eslint-disable @typescript-eslint/no-var-requires */
         connection.plugin(require('mongoose-autopopulate'));
         connection.plugin(require('mongoose-delete'), {
           overrideMethods: ['findById', 'findOne'],
